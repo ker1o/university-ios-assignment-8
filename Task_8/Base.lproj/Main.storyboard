@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Task_8" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="M3m-up-zYa">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="Z38-qi-igc"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="MIW-a4-4if"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bmc-w4-4UF">
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="findButtonClickHandler:" destination="BYZ-38-t0r" eventType="touchUpInside" id="d45-J2-kyv"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hOE-3V-faa">
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="hOE-3V-faa" secondAttribute="height" multiplier="1:1" id="y2a-LV-ZJ8"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="M3m-up-zYa" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2kR-rG-7YY"/>
+                            <constraint firstItem="bmc-w4-4UF" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="PWB-Kq-r0L"/>
+                            <constraint firstItem="bmc-w4-4UF" firstAttribute="top" secondItem="M3m-up-zYa" secondAttribute="bottom" constant="8" id="Qtz-Oi-vJk"/>
+                            <constraint firstItem="hOE-3V-faa" firstAttribute="top" secondItem="bmc-w4-4UF" secondAttribute="bottom" constant="16" id="U1f-20-v7o"/>
+                            <constraint firstItem="hOE-3V-faa" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="XZV-BV-cZK"/>
+                            <constraint firstItem="hOE-3V-faa" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.9" id="Zve-XE-2Ts"/>
+                            <constraint firstItem="M3m-up-zYa" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="kaj-bP-XEU"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="findButton" destination="bmc-w4-4UF" id="HMV-sJ-T5I"/>
+                        <outlet property="imageView" destination="hOE-3V-faa" id="GL4-rh-bFK"/>
+                        <outlet property="textField" destination="M3m-up-zYa" id="108-Ff-hsA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="116" y="122.78860569715144"/>
+        </scene>
+    </scenes>
+</document>
