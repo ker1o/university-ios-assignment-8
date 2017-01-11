@@ -10,9 +10,15 @@ import UIKit
 
 class ViewController: UIViewController, UITextFieldDelegate {
 
+    let mainStoryboardName: String = "Main"
+    let repositoriesViewControllerName = "RepositoriesViewController"
+    
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var findButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
+    
+    private var grayView: UIView!
+    private var indicator: UIActivityIndicatorView!
     
     private var controller: GITHUBAPIController = GITHUBAPIController.sharedController
     
@@ -31,28 +37,82 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func showImage() {
-        showLoadingScreen()
-        
         textField.resignFirstResponder()
         
         if let userName = self.textField.text {
+            showLoadingScreen()
+/*
             controller.getAvatar(for: userName,
-                                 success: {image in self.imageView.image = image},
-                                 failure: {error in print(error.localizedDescription)})
+                                 success: {image in
+                                    self.hideLoadingScreen()
+                                    self.imageView.image = image
+                                 },
+                                 failure: {error in
+                                    self.hideLoadingScreen()
+                                    self.showErrorPopup(error: error)
+                                 })
+*/
+            
+            controller.getRepositoriesInfo(for: userName,
+                                           success: {repositories in
+                                                self.hideLoadingScreen()
+                                                self.showRepositoriesScreen(userName: userName, repositories: repositories)
+                                            },
+                                           failure: {error in
+                                                self.hideLoadingScreen()
+                                                self.showErrorPopup(error: error)
+                                            })
         } else {
             print("Please enter the nickname.")
         }
     }
     
+    func showRepositoriesScreen(userName: String, repositories: [GITRepository]) {
+        let storyboard = UIStoryboard(name: mainStoryboardName, bundle: nil)
+        let repositoriesViewController = storyboard.instantiateViewController(withIdentifier: repositoriesViewControllerName) as! RepositoriesViewController
+        repositoriesViewController.title = userName
+        repositoriesViewController.repositories = repositories
+        self.navigationController?.pushViewController(repositoriesViewController, animated: true)
+    }
+    
+    func showErrorPopup(error: Error) {
+        var message: String
+        switch error {
+        case GITHUBAPIController.GITHUBError.RuntimeError(let errorMessage):
+            message = errorMessage
+        default:
+            message = error.localizedDescription
+        }
+        let errorPopup = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let okButtonAction = UIAlertAction(title: "OK", style: .default) {
+            action in
+            errorPopup.dismiss(animated: true, completion: nil)
+        }
+        errorPopup.addAction(okButtonAction)
+        self.present(errorPopup, animated: true, completion: nil)
+    }
+    
     func showLoadingScreen() {
-        let grayView = UIView(frame: self.view.bounds)
-        grayView.backgroundColor = UIColor(white: CGFloat(0), alpha: CGFloat(0.5))
-        self.view.addSubview(grayView)
+        if grayView == nil {
+            grayView = UIView(frame: self.view.bounds)
+            grayView.backgroundColor = UIColor(white: CGFloat(0), alpha: CGFloat(0.5))
+            
+            indicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+            grayView.addSubview(indicator)
+        }
         
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        grayView.frame = self.view.bounds
         indicator.center = grayView.center
+        
         indicator.startAnimating()
-        grayView.addSubview(indicator)
+        self.view.addSubview(grayView)
+    }
+    
+    func hideLoadingScreen() {
+        if (grayView != nil) && (grayView.superview != nil) {
+            indicator.stopAnimating()
+            grayView.removeFromSuperview()
+        }
     }
     
     

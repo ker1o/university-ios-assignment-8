@@ -5,4 +5,5 @@ use_frameworks!
 target 'Task_8' do
     pod 'Alamofire', '~> 4.0'
     pod 'AlamofireImage’, '~> 3.1’
+    pod 'SwiftyJSON’
 end
