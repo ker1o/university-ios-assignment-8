@@ -11,7 +11,6 @@
 		216068C31E23818700E01199 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216068C21E23818700E01199 /* ViewController.swift */; };
 		216068C61E23818700E01199 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 216068C41E23818700E01199 /* Main.storyboard */; };
 		216068C81E23818700E01199 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 216068C71E23818700E01199 /* Assets.xcassets */; };
-		216068CB1E23818700E01199 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 216068C91E23818700E01199 /* LaunchScreen.storyboard */; };
 		216068D41E2381E500E01199 /* GITHUBAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216068D31E2381E500E01199 /* GITHUBAPIController.swift */; };
 		216068D61E24B07000E01199 /* GITRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216068D51E24B07000E01199 /* GITRepository.swift */; };
 		216068D81E25147E00E01199 /* RepositoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216068D71E25147E00E01199 /* RepositoriesViewController.swift */; };
@@ -25,7 +24,6 @@
 		216068C21E23818700E01199 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		216068C51E23818700E01199 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		216068C71E23818700E01199 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		216068CA1E23818700E01199 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		216068CC1E23818700E01199 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		216068D31E2381E500E01199 /* GITHUBAPIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GITHUBAPIController.swift; sourceTree = "<group>"; };
 		216068D51E24B07000E01199 /* GITRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GITRepository.swift; sourceTree = "<group>"; };
@@ -56,13 +54,71 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2135ECAF1E2CEB0500B0A6F1 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				2135ECB01E2CEB2300B0A6F1 /* API */,
+				2135ECB11E2CEB7000B0A6F1 /* DTO */,
+			);
+			name = Network;
+			path = Network;
+			sourceTree = "<group>";
+		};
+		2135ECB01E2CEB2300B0A6F1 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				216068D31E2381E500E01199 /* GITHUBAPIController.swift */,
+			);
+			name = API;
+			path = API;
+			sourceTree = "<group>";
+		};
+		2135ECB11E2CEB7000B0A6F1 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				216068D51E24B07000E01199 /* GITRepository.swift */,
+			);
+			name = DTO;
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		2135ECB21E2CEBC700B0A6F1 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				2135ECB31E2CEC1800B0A6F1 /* Main UI */,
+				2135ECB41E2CEC5300B0A6F1 /* Repositories UI */,
+				216068C41E23818700E01199 /* Main.storyboard */,
+			);
+			name = Presentation;
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		2135ECB31E2CEC1800B0A6F1 /* Main UI */ = {
+			isa = PBXGroup;
+			children = (
+				216068C21E23818700E01199 /* ViewController.swift */,
+			);
+			name = "Main UI";
+			path = "Main UI";
+			sourceTree = "<group>";
+		};
+		2135ECB41E2CEC5300B0A6F1 /* Repositories UI */ = {
+			isa = PBXGroup;
+			children = (
+				216068D71E25147E00E01199 /* RepositoriesViewController.swift */,
+				216068D91E25167800E01199 /* RepositoryTableViewCell.swift */,
+			);
+			name = "Repositories UI";
+			path = "Repositories UI";
+			sourceTree = "<group>";
+		};
 		216068B41E23818600E01199 = {
 			isa = PBXGroup;
 			children = (
-				216068BF1E23818600E01199 /* Task_8 */,
-				216068BE1E23818600E01199 /* Products */,
-				271A31A37F34396391F26764 /* Pods */,
 				06396033B371950FDCA1AA27 /* Frameworks */,
+				271A31A37F34396391F26764 /* Pods */,
+				216068BE1E23818600E01199 /* Products */,
+				216068BF1E23818600E01199 /* Task_8 */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,26 +133,13 @@
 		216068BF1E23818600E01199 /* Task_8 */ = {
 			isa = PBXGroup;
 			children = (
-				216068D21E2381BA00E01199 /* Supporting Files */,
+				2135ECAF1E2CEB0500B0A6F1 /* Network */,
+				2135ECB21E2CEBC700B0A6F1 /* Presentation */,
 				216068C01E23818700E01199 /* AppDelegate.swift */,
-				216068C21E23818700E01199 /* ViewController.swift */,
-				216068D71E25147E00E01199 /* RepositoriesViewController.swift */,
-				216068D91E25167800E01199 /* RepositoryTableViewCell.swift */,
-				216068C41E23818700E01199 /* Main.storyboard */,
 				216068C71E23818700E01199 /* Assets.xcassets */,
-				216068C91E23818700E01199 /* LaunchScreen.storyboard */,
 				216068CC1E23818700E01199 /* Info.plist */,
 			);
 			path = Task_8;
-			sourceTree = "<group>";
-		};
-		216068D21E2381BA00E01199 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				216068D31E2381E500E01199 /* GITHUBAPIController.swift */,
-				216068D51E24B07000E01199 /* GITRepository.swift */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		271A31A37F34396391F26764 /* Pods */ = {
@@ -171,7 +214,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				216068CB1E23818700E01199 /* LaunchScreen.storyboard in Resources */,
 				216068C81E23818700E01199 /* Assets.xcassets in Resources */,
 				216068C61E23818700E01199 /* Main.storyboard in Resources */,
 			);
@@ -250,14 +292,7 @@
 				216068C51E23818700E01199 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		216068C91E23818700E01199 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				216068CA1E23818700E01199 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
