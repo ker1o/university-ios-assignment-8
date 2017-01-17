@@ -22,7 +22,7 @@ extension RepositoriesViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: RepositoryTableViewCell.reuseIdentifier) as! RepositoryTableViewCell
+        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: RepositoryTableViewCell.reuseIdentifier, for: indexPath) as! RepositoryTableViewCell
         if let repository = repositories?[indexPath.row] {
             tableViewCell.nameLabel.text = repository.name
             if repository.lastCommitAuthor != nil {
