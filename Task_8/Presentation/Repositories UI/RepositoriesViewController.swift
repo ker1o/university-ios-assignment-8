@@ -8,36 +8,32 @@
 
 import UIKit
 
-class RepositoriesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
-    let repositoriesCellIdentifier = "repositoriesCell"
+class RepositoriesViewController: UIViewController {
+    fileprivate let noCommitText = "There is no any commit yet"
     
     var repositories: [GITRepository]?
+
+}
+
+extension RepositoriesViewController: UITableViewDataSource {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.repositories?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: repositoriesCellIdentifier) as! RepositoryTableViewCell
+        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: RepositoryTableViewCell.reuseIdentifier) as! RepositoryTableViewCell
         if let repository = repositories?[indexPath.row] {
             tableViewCell.nameLabel.text = repository.name
             if repository.lastCommitAuthor != nil {
                 tableViewCell.authorLabel.text = repository.lastCommitAuthor
                 tableViewCell.dateLabel.text = repository.lastCommitDate
             } else {
-                tableViewCell.authorLabel.text = "There is no any commit yet"
+                tableViewCell.authorLabel.text = noCommitText
                 tableViewCell.dateLabel.text = ""
             }
         }
         
         return tableViewCell
     }
-
 }
