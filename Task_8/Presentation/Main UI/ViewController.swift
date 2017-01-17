@@ -10,8 +10,7 @@ import UIKit
 
 class ViewController: UIViewController, UITextFieldDelegate {
 
-    let mainStoryboardName: String = "Main"
-    let repositoriesViewControllerName = "RepositoriesViewController"
+
     
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var findButton: UIButton!
@@ -68,8 +67,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func showRepositoriesScreen(userName: String, repositories: [GITRepository]) {
-        let storyboard = UIStoryboard(name: mainStoryboardName, bundle: nil)
-        let repositoriesViewController = storyboard.instantiateViewController(withIdentifier: repositoriesViewControllerName) as! RepositoriesViewController
+        let repositoriesViewController = UIStoryboard.main.viewController(type: RepositoriesViewController.self)
         repositoriesViewController.title = userName
         repositoriesViewController.repositories = repositories
         self.navigationController?.pushViewController(repositoriesViewController, animated: true)

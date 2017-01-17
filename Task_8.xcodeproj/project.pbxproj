@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2135ECB71E2E20B100B0A6F1 /* StoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2135ECB61E2E20B100B0A6F1 /* StoryboardExtension.swift */; };
 		216068C11E23818700E01199 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216068C01E23818700E01199 /* AppDelegate.swift */; };
 		216068C31E23818700E01199 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216068C21E23818700E01199 /* ViewController.swift */; };
 		216068C61E23818700E01199 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 216068C41E23818700E01199 /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2135ECB61E2E20B100B0A6F1 /* StoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardExtension.swift; sourceTree = "<group>"; };
 		216068BD1E23818600E01199 /* Task_8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Task_8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		216068C01E23818700E01199 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		216068C21E23818700E01199 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -60,7 +62,6 @@
 				2135ECB01E2CEB2300B0A6F1 /* API */,
 				2135ECB11E2CEB7000B0A6F1 /* DTO */,
 			);
-			name = Network;
 			path = Network;
 			sourceTree = "<group>";
 		};
@@ -69,7 +70,6 @@
 			children = (
 				216068D31E2381E500E01199 /* GITHUBAPIController.swift */,
 			);
-			name = API;
 			path = API;
 			sourceTree = "<group>";
 		};
@@ -78,7 +78,6 @@
 			children = (
 				216068D51E24B07000E01199 /* GITRepository.swift */,
 			);
-			name = DTO;
 			path = DTO;
 			sourceTree = "<group>";
 		};
@@ -89,7 +88,6 @@
 				2135ECB41E2CEC5300B0A6F1 /* Repositories UI */,
 				216068C41E23818700E01199 /* Main.storyboard */,
 			);
-			name = Presentation;
 			path = Presentation;
 			sourceTree = "<group>";
 		};
@@ -98,7 +96,6 @@
 			children = (
 				216068C21E23818700E01199 /* ViewController.swift */,
 			);
-			name = "Main UI";
 			path = "Main UI";
 			sourceTree = "<group>";
 		};
@@ -108,8 +105,16 @@
 				216068D71E25147E00E01199 /* RepositoriesViewController.swift */,
 				216068D91E25167800E01199 /* RepositoryTableViewCell.swift */,
 			);
-			name = "Repositories UI";
 			path = "Repositories UI";
+			sourceTree = "<group>";
+		};
+		2135ECB51E2E207700B0A6F1 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2135ECB61E2E20B100B0A6F1 /* StoryboardExtension.swift */,
+			);
+			name = Common;
+			path = Common;
 			sourceTree = "<group>";
 		};
 		216068B41E23818600E01199 = {
@@ -133,6 +138,7 @@
 		216068BF1E23818600E01199 /* Task_8 */ = {
 			isa = PBXGroup;
 			children = (
+				2135ECB51E2E207700B0A6F1 /* Common */,
 				2135ECAF1E2CEB0500B0A6F1 /* Network */,
 				2135ECB21E2CEBC700B0A6F1 /* Presentation */,
 				216068C01E23818700E01199 /* AppDelegate.swift */,
@@ -277,6 +283,7 @@
 				216068D41E2381E500E01199 /* GITHUBAPIController.swift in Sources */,
 				216068D81E25147E00E01199 /* RepositoriesViewController.swift in Sources */,
 				216068C31E23818700E01199 /* ViewController.swift in Sources */,
+				2135ECB71E2E20B100B0A6F1 /* StoryboardExtension.swift in Sources */,
 				216068DA1E25167800E01199 /* RepositoryTableViewCell.swift in Sources */,
 				216068D61E24B07000E01199 /* GITRepository.swift in Sources */,
 				216068C11E23818700E01199 /* AppDelegate.swift in Sources */,
