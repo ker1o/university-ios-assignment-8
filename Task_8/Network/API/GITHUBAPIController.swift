@@ -14,11 +14,51 @@ import SwiftyJSON
 
 class GITHUBAPIController {
 
+    struct RequestConstants {
+        static let baseUrl = "https://api.github.com/"
+        
+        // MARK: Users method and params
+        static let users = "users/"
+        static let usersRepositories = "repos"
+
+        // MARK: Repositories method and params
+        static let repositories = "repos/"
+        static let repositoriesCommits = "commits"
+    }
+    
+    struct MappingConstants {
+        struct CommonKeys {
+            static let kId = "id"
+            static let kDate = "date"
+            static let kName = "name"
+            static let kMessage = "message"
+        }
+        
+        struct CommitsKeys {
+            static let kCommit = "commit"
+            static let kCommitter = "committer"
+        }
+        
+        struct UserKeys {
+            static let kAvatarUrl = "avatar_url"
+        }
+    }
+    
+    struct ErrorStrings {
+        static let sImageLoadingFailed = "Image loading failed"
+        static let sAvatarUrlCouldNotBeParsed = "Avatar URL could not be parsed"
+        static let sRepositoryInfoCouldnotBeParsed = "Repository info couldn't be parsed"
+        static let sRepositoryIsNotFound = "Repository is not found"
+        static let sCommitsAreNotFound = "Commits are not found"
+    }
+    
+    struct ApiConstants {
+        static let notFoundAnswer = "Not Found"
+    }
+    
     public static let sharedController = GITHUBAPIController()
 
     public static let timeoutIntervalForRequest = 5.0 // 5 seconds
-    
-    private let baseAPIURL = "https://api.github.com/"
     
     private var sessionManager: SessionManager
     
@@ -38,17 +78,17 @@ class GITHUBAPIController {
     public func getAvatar(for userName: String, success: @escaping (UIImage)->Void, failure: @escaping (Error)->Void) {
         self.getInfo(for: userName,
                 success: {response in
-                    if let avatarURL = response.value(forKey: "avatar_url") as? String {
+                    if let avatarURL = response.value(forKey: MappingConstants.UserKeys.kAvatarUrl) as? String {
                         //get the image with one more request
                         self.sessionManager.request(avatarURL).responseImage { responseImage in
                             if let image = responseImage.result.value {
                                 success(image)
                             } else {
-                                failure(GITHUBError.RuntimeError("Image loading failed."))
+                                failure(GITHUBError.RuntimeError(ErrorStrings.sImageLoadingFailed))
                             }
                         }
                     } else {
-                        failure(GITHUBError.RuntimeError("Avatar URL could not be parsed."))
+                        failure(GITHUBError.RuntimeError(ErrorStrings.sAvatarUrlCouldNotBeParsed))
                     }
                 },
                 failure: {error in
@@ -64,13 +104,13 @@ class GITHUBAPIController {
                                 let commitsGroup = DispatchGroup()
 
                                 for repositoryObject in repositoriesResponse.arrayValue {
-                                    if let repositoryName = repositoryObject["name"].string {
+                                    if let repositoryName = repositoryObject[MappingConstants.CommonKeys.kName].string {
                                         commitsGroup.enter()
                                         self.getCommits(for: userName,
                                                         in: repositoryName,
                                                         success: {commitsJSON in
-                                                            let lastCommitAuthor = commitsJSON[0]["commit"]["committer"]["name"].string
-                                                            let lastCommitDate = commitsJSON[0]["commit"]["committer"]["date"].string
+                                                            let lastCommitAuthor = commitsJSON[0][MappingConstants.CommitsKeys.kCommit][MappingConstants.CommitsKeys.kCommitter][MappingConstants.CommonKeys.kName].string
+                                                            let lastCommitDate = commitsJSON[0][MappingConstants.CommitsKeys.kCommit][MappingConstants.CommitsKeys.kCommitter][MappingConstants.CommonKeys.kDate].string
                                                             let repository = GITRepository(name: repositoryName, lastCommitDate: lastCommitDate, lastCommitAuthor: lastCommitAuthor)
                                                             repositories.append(repository)
                                                             commitsGroup.leave()
@@ -98,7 +138,7 @@ class GITHUBAPIController {
     }
 
     private func getInfo(for userName: String, success: @escaping (NSDictionary)->Void, failure: @escaping (Error)->Void) {
-        let requestURL = baseAPIURL + "users/\(userName)"
+        let requestURL = RequestConstants.baseUrl + RequestConstants.users + "\(userName)"
         self.sessionManager.request(requestURL).responseJSON {
             response in
             
@@ -107,7 +147,7 @@ class GITHUBAPIController {
                 if let response = json as? NSDictionary {
                     success(response)
                 } else {
-                    failure(GITHUBError.RuntimeError("Repository info couldn't be parsed"))
+                    failure(GITHUBError.RuntimeError(ErrorStrings.sRepositoryInfoCouldnotBeParsed))
                 }
             case .failure(let error):
                 failure(error)
@@ -116,7 +156,7 @@ class GITHUBAPIController {
     }
     
     private func getRepositories(for userName: String, success: @escaping (JSON)->Void, failure: @escaping (Error)->Void) {
-        let requestURL = baseAPIURL + "users/\(userName)/repos"
+        let requestURL = RequestConstants.baseUrl + RequestConstants.users + "\(userName)/" + RequestConstants.usersRepositories
         
         self.sessionManager.request(requestURL).responseJSON {
             response in
@@ -124,8 +164,8 @@ class GITHUBAPIController {
             switch response.result {
             case .success(let json):
                 let swiftyJSON = JSON(json)
-                if swiftyJSON.array == nil && swiftyJSON["message"].string == "Not Found" {
-                    failure(GITHUBError.RuntimeError("Repository is not found!"))
+                if swiftyJSON.array == nil && swiftyJSON[MappingConstants.CommonKeys.kMessage].string == ApiConstants.notFoundAnswer {
+                    failure(GITHUBError.RuntimeError(ErrorStrings.sRepositoryIsNotFound))
                 } else {
                     success(swiftyJSON)
                 }
@@ -136,15 +176,15 @@ class GITHUBAPIController {
     }
     
     private func getCommits(for userName: String, in repositoryName: String, success: @escaping (JSON)->Void, failure: @escaping (Error)->Void) {
-        let requestURL = baseAPIURL + "repos/\(userName)/\(repositoryName)/commits"
+        let requestURL = RequestConstants.baseUrl + RequestConstants.repositories + "\(userName)/\(repositoryName)/" + RequestConstants.repositoriesCommits
         self.sessionManager.request(requestURL).responseJSON {
             response in
             
             switch response.result {
             case .success(let json):
                 let swiftyJSON = JSON(json)
-                if swiftyJSON.array == nil && swiftyJSON["message"].string == "Not Found" {
-                    failure(GITHUBError.RuntimeError("Commits are not found!"))
+                if swiftyJSON.array == nil && swiftyJSON[MappingConstants.CommonKeys.kMessage].string == ApiConstants.notFoundAnswer {
+                    failure(GITHUBError.RuntimeError(ErrorStrings.sCommitsAreNotFound))
                 } else {
                     success(swiftyJSON)
                 }
