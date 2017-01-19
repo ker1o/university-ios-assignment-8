@@ -2,6 +2,8 @@
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
+.gitignore
+
 ## Build generated
 build/
 DerivedData/
@@ -15,7 +17,16 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
+
+.DS_Store
 xcuserdata/
+*.orig
+
+*.xcodeproj/
+!*.xcodeproj/project.pbxproj
+
+*.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
 
 ## Other
 *.moved-aside
@@ -63,5 +74,3 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
-
-.DS_Store
