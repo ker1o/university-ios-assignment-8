@@ -1,10 +1,10 @@
-/* 
-  Localizable.strings
-  Task_8
-
-  Created by Kirill Asyamolov on 19/01/17.
-  Copyright © 2017 Kirill Asyamolov. All rights reserved.
-*/
+/*
+ Localizable.strings
+ Task_8
+ 
+ Created by Kirill Asyamolov on 19/01/17.
+ Copyright © 2017 Kirill Asyamolov. All rights reserved.
+ */
 
 // MARK: - Common titles
 "Error" = "Error";
@@ -14,7 +14,7 @@
 "Main.Error.QueryIsEmpty" = "Please enter the nickname";
 
 // MARK: - Repository View
-"Repository.NoCommits" = "There is no any commit yet"
+"Repository.NoCommits" = "There is no any commit yet";
 
 // MARK: - GitHub API
 "GitHubApi.Error.ImageLoadingFailed" = "Image loading failed";
