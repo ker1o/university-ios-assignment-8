@@ -10,8 +10,6 @@ import UIKit
 
 class RepositoriesViewController: UIViewController {
     
-    fileprivate let noCommitText = "There is no any commit yet"
-    
     var repositories: [GITRepository]?
 }
 
@@ -30,7 +28,7 @@ extension RepositoriesViewController: UITableViewDataSource {
                 tableViewCell.authorLabel.text = repository.lastCommitAuthor
                 tableViewCell.dateLabel.text = repository.lastCommitDate
             } else {
-                tableViewCell.authorLabel.text = noCommitText
+                tableViewCell.authorLabel.text = NSLocalizedString("Repository.NoCommits", comment: "")
                 tableViewCell.dateLabel.text = ""
             }
         }

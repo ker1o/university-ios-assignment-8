@@ -27,7 +27,12 @@ class ViewController: UIViewController {
     func showImage() {
         textField.resignFirstResponder()
         
-        if let userName = self.textField.text {
+        if let userName = textField.text {
+            guard !userName.isEmpty else {
+                showPopup(text: NSLocalizedString("Main.Error.QueryIsEmpty", comment: ""))
+                return
+            }
+            
             showLoadingScreen()
 /*
             controller.getAvatar(for: userName, success: { image in
@@ -46,8 +51,6 @@ class ViewController: UIViewController {
                 self.hideLoadingScreen()
                 self.showErrorPopup(error: error)
             })
-        } else {
-            print("Please enter the nickname.")
         }
     }
     
@@ -66,9 +69,14 @@ class ViewController: UIViewController {
         default:
             message = error.localizedDescription
         }
-        let errorPopup = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let okButtonAction = UIAlertAction(title: "OK", style: .default) {
-            action in
+        showPopup(text: message)
+    }
+    
+    func showPopup(text: String) {
+        let errorPopup = UIAlertController(title: NSLocalizedString("Error", comment: ""),
+                                           message: text, preferredStyle: .alert)
+        let okButtonAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""),
+                                           style: .default) { action in
             errorPopup.dismiss(animated: true, completion: nil)
         }
         errorPopup.addAction(okButtonAction)
