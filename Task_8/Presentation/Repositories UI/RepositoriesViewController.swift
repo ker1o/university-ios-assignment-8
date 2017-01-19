@@ -9,20 +9,21 @@
 import UIKit
 
 class RepositoriesViewController: UIViewController {
+    
     fileprivate let noCommitText = "There is no any commit yet"
     
     var repositories: [GITRepository]?
-
 }
 
 extension RepositoriesViewController: UITableViewDataSource {
-    
+  
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.repositories?.count ?? 0
+        return repositories?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: RepositoryTableViewCell.reuseIdentifier, for: indexPath) as! RepositoryTableViewCell
+        let tableViewCell = tableView.dequeueReusableCell(withIdentifier: RepositoryTableViewCell.reuseIdentifier,
+                                                          for: indexPath) as! RepositoryTableViewCell
         if let repository = repositories?[indexPath.row] {
             tableViewCell.nameLabel.text = repository.name
             if repository.lastCommitAuthor != nil {
@@ -36,4 +37,5 @@ extension RepositoriesViewController: UITableViewDataSource {
         
         return tableViewCell
     }
+    
 }

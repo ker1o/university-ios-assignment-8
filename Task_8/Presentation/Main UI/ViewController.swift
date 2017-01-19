@@ -8,9 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate {
-
-
+class ViewController: UIViewController {
     
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var findButton: UIButton!
@@ -21,16 +19,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     private var controller: GITHUBAPIController = GITHUBAPIController.sharedController
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
 
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        showImage()
-        return true
-    }
-    
     @IBAction func findButtonClickHandler(_ sender: AnyObject) {
         showImage()
     }
@@ -41,26 +30,22 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if let userName = self.textField.text {
             showLoadingScreen()
 /*
-            controller.getAvatar(for: userName,
-                                 success: {image in
-                                    self.hideLoadingScreen()
-                                    self.imageView.image = image
-                                 },
-                                 failure: {error in
-                                    self.hideLoadingScreen()
-                                    self.showErrorPopup(error: error)
-                                 })
+            controller.getAvatar(for: userName, success: { image in
+                self.hideLoadingScreen()
+                self.imageView.image = image
+            }, failure: { error in
+                self.hideLoadingScreen()
+                self.showErrorPopup(error: error)
+            })
 */
             
-            controller.getRepositoriesInfo(for: userName,
-                                           success: {repositories in
-                                                self.hideLoadingScreen()
-                                                self.showRepositoriesScreen(userName: userName, repositories: repositories)
-                                            },
-                                           failure: {error in
-                                                self.hideLoadingScreen()
-                                                self.showErrorPopup(error: error)
-                                            })
+            controller.getRepositoriesInfo(for: userName, success: { repositories in
+                self.hideLoadingScreen()
+                self.showRepositoriesScreen(userName: userName, repositories: repositories)
+            }, failure: { error in
+                self.hideLoadingScreen()
+                self.showErrorPopup(error: error)
+            })
         } else {
             print("Please enter the nickname.")
         }
@@ -113,6 +98,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
 }
+
+extension ViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        showImage()
+        return true
+    }
+}
+
 

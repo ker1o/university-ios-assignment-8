@@ -7,17 +7,26 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class GITRepository {
+   
+    let kCommit = "commit"
+    let kCommitter = "committer"
+    let kName = "name"
+    let kDate = "date"
+    
     var name: String
     var lastCommitDate: String?
     var lastCommitAuthor: String?
     
-    init(name: String, lastCommitDate: String?, lastCommitAuthor: String?) {
+    init(name: String) {
         self.name = name
-        self.lastCommitDate = lastCommitDate
-        self.lastCommitAuthor = lastCommitAuthor
     }
     
-    
+    public func mapCommitsInfo(commitsJSON: JSON) {
+        lastCommitAuthor = commitsJSON[0][kCommit][kCommitter][kName].string
+        lastCommitDate = commitsJSON[0][kCommit][kCommitter][kDate].string
+    }
+   
 }

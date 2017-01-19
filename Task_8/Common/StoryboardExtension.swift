@@ -10,9 +10,7 @@ import UIKit
 
 private let mainStoryboardName: String = "Main"
 
-
 extension UIStoryboard {
-    
     static var main: UIStoryboard {
         return UIStoryboard(name: mainStoryboardName, bundle: nil)
     }

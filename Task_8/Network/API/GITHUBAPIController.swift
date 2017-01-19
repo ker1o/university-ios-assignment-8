@@ -34,11 +34,6 @@ class GITHUBAPIController {
             static let kMessage = "message"
         }
         
-        struct CommitsKeys {
-            static let kCommit = "commit"
-            static let kCommitter = "committer"
-        }
-        
         struct UserKeys {
             static let kAvatarUrl = "avatar_url"
         }
@@ -75,69 +70,64 @@ class GITHUBAPIController {
     }
     
     
-    public func getAvatar(for userName: String, success: @escaping (UIImage)->Void, failure: @escaping (Error)->Void) {
-        self.getInfo(for: userName,
-                success: {response in
-                    if let avatarURL = response.value(forKey: MappingConstants.UserKeys.kAvatarUrl) as? String {
-                        //get the image with one more request
-                        self.sessionManager.request(avatarURL).responseImage { responseImage in
-                            if let image = responseImage.result.value {
-                                success(image)
-                            } else {
-                                failure(GITHUBError.RuntimeError(ErrorStrings.sImageLoadingFailed))
-                            }
-                        }
+    public func getAvatar(for userName: String, success: @escaping (UIImage)->Void,
+                          failure: @escaping (Error)->Void) {
+        self.getInfo(for: userName, success: { response in
+            if let avatarURL = response.value(forKey: MappingConstants.UserKeys.kAvatarUrl) as? String {
+                // get the image with one more request
+                self.sessionManager.request(avatarURL).responseImage { responseImage in
+                    if let image = responseImage.result.value {
+                        success(image)
                     } else {
-                        failure(GITHUBError.RuntimeError(ErrorStrings.sAvatarUrlCouldNotBeParsed))
+                        failure(GITHUBError.RuntimeError(ErrorStrings.sImageLoadingFailed))
                     }
-                },
-                failure: {error in
-                    failure(error)
-                })
+                }
+            } else {
+                failure(GITHUBError.RuntimeError(ErrorStrings.sAvatarUrlCouldNotBeParsed))
+            }
+        }, failure: { error in
+            failure(error)
+        })
     }
     
-    public func getRepositoriesInfo(for userName: String, success: @escaping ([GITRepository])->Void, failure: @escaping (Error)->Void) {
-        self.getRepositories(for: userName,
-                             success: { repositoriesResponse in
-                                var repositories = [GITRepository]()
-                                var errors = [Error]()
-                                let commitsGroup = DispatchGroup()
+    public func getRepositoriesInfo(for userName: String, success: @escaping ([GITRepository])->Void,
+                                    failure: @escaping (Error)->Void) {
+        self.getRepositories(for: userName, success: { repositoriesResponse in
+            var repositories = [GITRepository]()
+            var errors = [Error]()
+            let commitsGroup = DispatchGroup()
 
-                                for repositoryObject in repositoriesResponse.arrayValue {
-                                    if let repositoryName = repositoryObject[MappingConstants.CommonKeys.kName].string {
-                                        commitsGroup.enter()
-                                        self.getCommits(for: userName,
-                                                        in: repositoryName,
-                                                        success: {commitsJSON in
-                                                            let lastCommitAuthor = commitsJSON[0][MappingConstants.CommitsKeys.kCommit][MappingConstants.CommitsKeys.kCommitter][MappingConstants.CommonKeys.kName].string
-                                                            let lastCommitDate = commitsJSON[0][MappingConstants.CommitsKeys.kCommit][MappingConstants.CommitsKeys.kCommitter][MappingConstants.CommonKeys.kDate].string
-                                                            let repository = GITRepository(name: repositoryName, lastCommitDate: lastCommitDate, lastCommitAuthor: lastCommitAuthor)
-                                                            repositories.append(repository)
-                                                            commitsGroup.leave()
-                                                        },
-                                                        failure: {error in
-                                                            errors.append(error)
-                                                            commitsGroup.leave()
-                                                        })
-                                    }
-                                }
+            for repositoryObject in repositoriesResponse.arrayValue {
+                if let repositoryName = repositoryObject[MappingConstants.CommonKeys.kName].string {
+                    commitsGroup.enter()
+                    self.getCommits(for: userName, in: repositoryName, success: { commitsJSON in
+                        let repository = GITRepository(name: repositoryName)
+                        repository.mapCommitsInfo(commitsJSON: commitsJSON)
+                        repositories.append(repository)
+                        commitsGroup.leave()
+                    }, failure: { error in
+                        errors.append(error)
+                        commitsGroup.leave()
+                    })
+                }
+            }
                                 
-                                commitsGroup.notify(queue: DispatchQueue.main) {
-                                    if errors.count > 0 && repositories.count == 0 {
-                                        for error in errors {
-                                            failure(error)
-                                        }
-                                    } else {
-                                        success(repositories)
-                                    }
-                                }
-                             },
-                             failure: {error in
-                                failure(error)
-                             })
+            commitsGroup.notify(queue: DispatchQueue.main) {
+                if errors.count > 0 && repositories.count == 0 {
+                    for error in errors {
+                        failure(error)
+                    }
+                } else {
+                    success(repositories)
+                }
+            }
+        }, failure: { error in
+            failure(error)
+        })
     }
 
-    private func getInfo(for userName: String, success: @escaping (NSDictionary)->Void, failure: @escaping (Error)->Void) {
+    private func getInfo(for userName: String, success: @escaping (NSDictionary)->Void,
+                         failure: @escaping (Error)->Void) {
         let requestURL = RequestConstants.baseUrl + RequestConstants.users + "\(userName)"
         self.sessionManager.request(requestURL).responseJSON {
             response in
@@ -155,8 +145,10 @@ class GITHUBAPIController {
         }
     }
     
-    private func getRepositories(for userName: String, success: @escaping (JSON)->Void, failure: @escaping (Error)->Void) {
-        let requestURL = RequestConstants.baseUrl + RequestConstants.users + "\(userName)/" + RequestConstants.usersRepositories
+    private func getRepositories(for userName: String, success: @escaping (JSON)->Void,
+                                 failure: @escaping (Error)->Void) {
+        let requestURL = RequestConstants.baseUrl + RequestConstants.users + "\(userName)/" +
+            RequestConstants.usersRepositories
         
         self.sessionManager.request(requestURL).responseJSON {
             response in
@@ -164,7 +156,8 @@ class GITHUBAPIController {
             switch response.result {
             case .success(let json):
                 let swiftyJSON = JSON(json)
-                if swiftyJSON.array == nil && swiftyJSON[MappingConstants.CommonKeys.kMessage].string == ApiConstants.notFoundAnswer {
+                if swiftyJSON.array == nil
+                    && swiftyJSON[MappingConstants.CommonKeys.kMessage].string == ApiConstants.notFoundAnswer {
                     failure(GITHUBError.RuntimeError(ErrorStrings.sRepositoryIsNotFound))
                 } else {
                     success(swiftyJSON)
@@ -175,15 +168,18 @@ class GITHUBAPIController {
         }
     }
     
-    private func getCommits(for userName: String, in repositoryName: String, success: @escaping (JSON)->Void, failure: @escaping (Error)->Void) {
-        let requestURL = RequestConstants.baseUrl + RequestConstants.repositories + "\(userName)/\(repositoryName)/" + RequestConstants.repositoriesCommits
+    private func getCommits(for userName: String, in repositoryName: String,
+                            success: @escaping (JSON)->Void, failure: @escaping (Error)->Void) {
+        let requestURL = RequestConstants.baseUrl + RequestConstants.repositories +
+            "\(userName)/\(repositoryName)/" + RequestConstants.repositoriesCommits
         self.sessionManager.request(requestURL).responseJSON {
             response in
             
             switch response.result {
             case .success(let json):
                 let swiftyJSON = JSON(json)
-                if swiftyJSON.array == nil && swiftyJSON[MappingConstants.CommonKeys.kMessage].string == ApiConstants.notFoundAnswer {
+                if swiftyJSON.array == nil
+                    && swiftyJSON[MappingConstants.CommonKeys.kMessage].string == ApiConstants.notFoundAnswer {
                     failure(GITHUBError.RuntimeError(ErrorStrings.sCommitsAreNotFound))
                 } else {
                     success(swiftyJSON)
