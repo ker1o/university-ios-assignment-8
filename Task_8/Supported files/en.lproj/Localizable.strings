@@ -1,0 +1,24 @@
+/* 
+  Localizable.strings
+  Task_8
+
+  Created by Kirill Asyamolov on 19/01/17.
+  Copyright © 2017 Kirill Asyamolov. All rights reserved.
+*/
+
+// MARK: - Common titles
+"Error" = "Error";
+"OK" = "OK";
+
+// MARK: - Main view
+"Main.Error.QueryIsEmpty" = "Please enter the nickname";
+
+// MARK: - Repository View
+"Repository.NoCommits" = "There is no any commit yet"
+
+// MARK: - GitHub API
+"GitHubApi.Error.ImageLoadingFailed" = "Image loading failed";
+"GitHubApi.Error.AvatarUrlCouldNotBeParsed" = "Avatar URL could not be parsed";
+"GitHubApi.Error.RepositoryInfoCouldNotBeParsed" = "Repository info couldn't be parsed";
+"GitHubApi.Error.RepositoryIsNotFound" = "Repository is not found";
+"GitHubApi.Error.CommitsAreNotFound" = "Commits are not found";

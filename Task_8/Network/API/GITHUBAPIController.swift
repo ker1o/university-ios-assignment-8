@@ -39,14 +39,6 @@ class GITHUBAPIController {
         }
     }
     
-    struct ErrorStrings {
-        static let sImageLoadingFailed = "Image loading failed"
-        static let sAvatarUrlCouldNotBeParsed = "Avatar URL could not be parsed"
-        static let sRepositoryInfoCouldnotBeParsed = "Repository info couldn't be parsed"
-        static let sRepositoryIsNotFound = "Repository is not found"
-        static let sCommitsAreNotFound = "Commits are not found"
-    }
-    
     struct ApiConstants {
         static let notFoundAnswer = "Not Found"
     }
@@ -79,11 +71,11 @@ class GITHUBAPIController {
                     if let image = responseImage.result.value {
                         success(image)
                     } else {
-                        failure(GITHUBError.RuntimeError(ErrorStrings.sImageLoadingFailed))
+                        failure(GITHUBError.RuntimeError(NSLocalizedString("GitHubApi.Error.ImageLoadingFailed", comment: "")))
                     }
                 }
             } else {
-                failure(GITHUBError.RuntimeError(ErrorStrings.sAvatarUrlCouldNotBeParsed))
+                failure(GITHUBError.RuntimeError(NSLocalizedString("GitHubApi.Error.AvatarUrlCouldNotBeParsed", comment: "")))
             }
         }, failure: { error in
             failure(error)
@@ -137,7 +129,7 @@ class GITHUBAPIController {
                 if let response = json as? NSDictionary {
                     success(response)
                 } else {
-                    failure(GITHUBError.RuntimeError(ErrorStrings.sRepositoryInfoCouldnotBeParsed))
+                    failure(GITHUBError.RuntimeError(NSLocalizedString("GitHubApi.Error.RepositoryInfoCouldNotBeParsed", comment: "")))
                 }
             case .failure(let error):
                 failure(error)
@@ -158,7 +150,7 @@ class GITHUBAPIController {
                 let swiftyJSON = JSON(json)
                 if swiftyJSON.array == nil
                     && swiftyJSON[MappingConstants.CommonKeys.kMessage].string == ApiConstants.notFoundAnswer {
-                    failure(GITHUBError.RuntimeError(ErrorStrings.sRepositoryIsNotFound))
+                    failure(GITHUBError.RuntimeError(NSLocalizedString("GitHubApi.Error.RepositoryIsNotFound", comment: "")))
                 } else {
                     success(swiftyJSON)
                 }
@@ -180,7 +172,7 @@ class GITHUBAPIController {
                 let swiftyJSON = JSON(json)
                 if swiftyJSON.array == nil
                     && swiftyJSON[MappingConstants.CommonKeys.kMessage].string == ApiConstants.notFoundAnswer {
-                    failure(GITHUBError.RuntimeError(ErrorStrings.sCommitsAreNotFound))
+                    failure(GITHUBError.RuntimeError(NSLocalizedString("GitHubApi.Error.CommitsAreNotFound", comment: "")))
                 } else {
                     success(swiftyJSON)
                 }
